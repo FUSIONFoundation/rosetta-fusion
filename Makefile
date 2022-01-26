@@ -28,10 +28,10 @@ test:
 	${TEST_SCRIPT}
 
 build:
-	docker build -t rosetta-ethereum:latest https://github.com/coinbase/rosetta-ethereum.git
+	docker build -t rosetta-fusion:latest https://github.com/MrHunter1986/rosetta-fusion.git
 
 build-local:
-	docker build -t rosetta-ethereum:latest .
+	docker build -t rosetta-fusion:latest .
 
 build-release:
 	# make sure to always set version with vX.X.X

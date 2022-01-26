@@ -37,15 +37,19 @@ RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chmod -R 777 "$GOPATH"
 FROM golang-builder as geth-builder
 
 # VERSION: go-ethereum v.1.10.8
-RUN git clone github.com/FusionFoundation/efsn \
-  && cd efsn \
-  && git checkout v4.0.1
+#RUN git clone https://github.com/ethereum/go-ethereum \
+#  && cd go-ethereum \
+#  && git checkout 26675454bf93bf904be7a43cce6b3f550115ff90
 
-RUN cd efsn \
-  && make efsn
+#RUN cd go-ethereum \
+#  && make geth
 
-RUN mv efsn/build/bin/efsn /app/efsn \
-  && rm -rf efsn
+#RUN mv go-ethereum/build/bin/geth /app/geth \
+#  && rm -rf go-ethereum
+RUN curl -L https://github.com/FUSIONFoundation/efsn/releases/download/v4.0.1/efsn-linux-amd64 > efsn \
+  && chmod +x efsn \
+  && mv efsn /app/geth
+
 
 # Compile rosetta-ethereum
 FROM golang-builder as rosetta-builder
@@ -55,10 +59,10 @@ COPY . src
 RUN cd src \
   && go build
 
-RUN mv src/rosetta-fusion /app/rosetta-fusion \
-  && mkdir /app/fusion \
-  && mv src/fusion/call_tracer.js /app/etfusionhereum/call_tracer.js \
-  && mv src/fusion/efsn.toml /app/fusion/efsn.toml \
+RUN mv src/rosetta-ethereum /app/rosetta-ethereum \
+  && mkdir /app/ethereum \
+  && mv src/ethereum/call_tracer.js /app/ethereum/call_tracer.js \
+  && mv src/ethereum/geth.toml /app/ethereum/geth.toml \
   && rm -rf src
 
 ## Build Final Image
@@ -74,14 +78,13 @@ RUN mkdir -p /app \
 WORKDIR /app
 
 # Copy binary from geth-builder
-COPY --from=geth-builder /app/efsn /app/efsn
+COPY --from=geth-builder /app/geth /app/geth
 
 # Copy binary from rosetta-builder
-COPY --from=rosetta-builder /app/fusion /app/fusion
-COPY --from=rosetta-builder /app/rosetta-fusion /app/rosetta-fusion
+COPY --from=rosetta-builder /app/ethereum /app/ethereum
+COPY --from=rosetta-builder /app/rosetta-ethereum /app/rosetta-ethereum
 
 # Set permissions for everything added to /app
 RUN chmod -R 755 /app/*
 
-CMD ["/app/rosetta-fusion", "run"]
-
+CMD ["/app/rosetta-ethereum", "run"]

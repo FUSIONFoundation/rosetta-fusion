@@ -44,8 +44,8 @@ execute() {
   log_info "downloading image into ${tmpdir}"
   http_download "${tmpdir}/${TARBALL}" "${TARBALL_URL}" "" "1"
   docker load --input "${tmpdir}/${TARBALL}"
-  docker tag "rosetta-fusion:${TAG}" "rosetta-fusion:latest"
-  log_info "loaded rosetta-fusion:${TAG} and tagged as rosetta-fusion:latest"
+  docker tag "rosetta-ethereum:${TAG}" "rosetta-ethereum:latest"
+  log_info "loaded rosetta-ethereum:${TAG} and tagged as rosetta-ethereum:latest"
   rm -rf "${tmpdir}"
   log_info "removed temporary directory ${tmpdir}"
 }
@@ -196,10 +196,10 @@ End of functions from https://github.com/client9/shlib
 ------------------------------------------------------------------------
 EOF
 
-BINARY=rosetta-fusion
+BINARY=rosetta-ethereum
 FORMAT=tar.gz
-OWNER=MrHunter1986
-REPO="rosetta-fusion"
+OWNER=coinbase
+REPO="rosetta-ethereum"
 PREFIX="$OWNER/$REPO"
 
 # use in logging routines

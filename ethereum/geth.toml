@@ -7,7 +7,6 @@ NoUSB = true
 HTTPHost = "0.0.0.0"
 HTTPPort = 8545
 HTTPVirtualHosts = ["*"]
-GraphQLVirtualHosts = ["*"]
 HTTPModules = ["eth", "debug", "admin", "txpool"]
 IPCPath = ""
 

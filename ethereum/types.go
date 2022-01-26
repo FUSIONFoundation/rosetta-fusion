@@ -25,10 +25,10 @@ import (
 
 const (
 	// NodeVersion is the version of geth we are using.
-	NodeVersion = "1.9.24"
+	NodeVersion = "v4.0.1"
 
 	// Blockchain is Ethereum.
-	Blockchain string = "Ethereum"
+	Blockchain string = "Fusion"
 
 	// MainnetNetwork is the value of the network
 	// in MainnetNetworkIdentifier.
@@ -120,7 +120,7 @@ const (
 	TransferGasLimit = int64(21000) //nolint:gomnd
 
 	// MainnetGethArguments are the arguments to start a mainnet geth instance.
-	MainnetGethArguments = `--config=/app/ethereum/geth.toml --gcmode=archive --graphql`
+	MainnetGethArguments = `--config=/app/ethereum/geth.toml --gcmode=archive`
 
 	// IncludeMempoolCoins does not apply to rosetta-ethereum as it is not UTXO-based.
 	IncludeMempoolCoins = false

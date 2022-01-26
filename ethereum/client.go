@@ -29,7 +29,7 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/hexutil"
-	"github.com/ethereum/go-ethereum/consensus/ethash"
+	//"github.com/ethereum/go-ethereum/consensus/ethash"
 	"github.com/ethereum/go-ethereum/core/types"
 	EthTypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/eth/tracers"
@@ -1071,16 +1071,16 @@ func (ec *Client) populateTransaction(
 func (ec *Client) miningReward(
 	currentBlock *big.Int,
 ) int64 {
-	blockReward := ethash.FrontierBlockReward.Int64()
-	if ec.p.IsByzantium(currentBlock) {
-		blockReward = ethash.ByzantiumBlockReward.Int64()
+	var i int64
+	div2 := big.NewInt(2)
+	// initial reward 2.5
+	var reward = new(big.Int).Mul(big.NewInt(25), big.NewInt(100000000000000000))
+	// every 4915200 blocks divide reward by 2
+	segment := new(big.Int).Div(currentBlock, new(big.Int).SetUint64(4915200))
+	for i = 0; i < segment.Int64(); i++ {
+		reward = new(big.Int).Div(reward, div2)
 	}
-
-	if ec.p.IsConstantinople(currentBlock) {
-		blockReward = ethash.ConstantinopleBlockReward.Int64()
-	}
-
-	return blockReward
+	return reward.Int64()
 }
 
 func (ec *Client) blockRewardTransaction(
